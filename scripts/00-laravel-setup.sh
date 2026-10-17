@@ -7,6 +7,10 @@ echo "=== Configurando Laravel para Render ==="
 PORT="${PORT:-10000}"
 echo "Configurando Nginx para escuchar en el puerto: $PORT..."
 
+if [ -f "/var/www/html/conf/nginx/nginx-site.conf" ]; then
+    cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf 2>/dev/null || true
+fi
+
 if [ -d "/etc/nginx" ]; then
     find /etc/nginx/ -type f -name "*.conf" -exec sed -i "s/listen 80;/listen ${PORT};/g" {} + 2>/dev/null || true
     find /etc/nginx/ -type f -name "*.conf" -exec sed -i "s/listen \[::\]:80;/listen [::]:${PORT};/g" {} + 2>/dev/null || true
